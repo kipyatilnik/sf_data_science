@@ -4,8 +4,8 @@
 
 import numpy as np
 
-def random_predict(number:int=1) -> int:
-    """ Случайно угадавыаем число
+def random_predict(number: int=1) -> int:
+    """ Случайно угадаываем число
 
     Args:
         number (int, optional): Загаданное число. Defaults to 1.
@@ -16,19 +16,19 @@ def random_predict(number:int=1) -> int:
     
     count = 0
         
-    def optimal_selection(number,num_first,num_last,count) -> int:
-        count+=1
-        predict_number = np.random.randint(num_first,num_last+1) # предполагаемое число
+    def optimal_selection(number, num_first, num_last, count) -> int:
+        count += 1
+        predict_number = np.random.randint(num_first, num_last + 1) # предполагаемое число
         if number == predict_number:
-            return(count)
+            return count
         elif number < predict_number:
 #            print(f"cur_count:{count} cur_number:{number} cur_predict_number{predict_number} cur_num_first{num_first} cur_num_last{num_last}")
-            return(optimal_selection(number,num_first,predict_number-1,count))
+            return optimal_selection(number, num_first, predict_number - 1, count)
         else:
 #            print(f"cur_count:{count} cur_number:{number} cur_predict_number{predict_number} cur_num_first{num_first} cur_num_last{num_last}")
-            return(optimal_selection(number,predict_number+1,num_last,count))
-    count = optimal_selection(number,1,100,count)
-    return(count)
+            return optimal_selection(number, predict_number + 1, num_last, count)
+    count = optimal_selection(number, 1, 100, count)
+    return count
     
 def score_game(random_predict) -> int:
     """За какое количество попыток в среднем за 1000 подходов угадывает наш алгоритм
@@ -39,16 +39,16 @@ def score_game(random_predict) -> int:
     Returns:
         int: среднее количество попыток
     """
-    count_ls = []
+    count_mean = []
     np.random.seed(1) # фиксируем сид для воспроизводимости
     random_array = np.random.randint(1, 101, size=(1000)) # загадали список чисел
     
     for number in random_array:
-        count_ls.append(random_predict(number))
+        count_mean.append(random_predict(number))
     
-    score = int(np.mean(count_ls))
+    score = int(np.mean(count_mean))
     print(f'Ваш алгоритм угадывает число в среднем за:{score} попыток')
-    return(score)
+    return score
 
 
 if __name__ == '__main__':
